@@ -1,5 +1,10 @@
 <h1 align="center">Welcome to 2021-2022-devops-final-frontend 👋</h1>
 
+
+Here is my rendering for the Devops lab. This git corresponds to the frontend of the application. <br/>
+(A clean repository was created today in order to respect the gitmoji convention during my commits, I did not succeed all the first time tp) <br/>
+I carried out the manual deployment to netlify, but my application cannot communicate with the back, despite the change of url. I nevertheless made the upload to dockerhub. <br/>
+
 > The front end to my new startup idea
 
 ## Install
