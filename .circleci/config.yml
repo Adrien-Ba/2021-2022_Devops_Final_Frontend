@@ -16,8 +16,35 @@ jobs:
             - node_modules
           key: dependencies-{{ checksum "package.json" }}-v1
 
+  docker-build-and-push:
+    working_directory: /dockerapp
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.11
+      - run:
+          name: Build application Docker image
+          command: docker build -t app .
+      - deploy:
+          name: Publish application to docker hub
+          command: |
+            docker login -e $DOCKERHUB_EMAIL -u $DOCKERHUB_USERID -p $DOCKERHUB_PWD
+            docker tag app $DOCKERHUB_USERID/20212022devopsfinalfrontend:$CIRCLE_BUILD_NUM
+            docker tag app $DOCKERHUB_USERID/20212022devopsfinalfrontend:latest
+            docker push $DOCKERHUB_USERID/20212022devopsfinalfrontend:$CIRCLE_BUILD_NUM
+            docker push $DOCKERHUB_USERID/20212022devopsfinalfrontend:latest
+
+
 workflows:
   version: 2
   build-and-install:
     jobs:
       - build
+      - docker-build-and-push:
+          requires:
+            - build
+          filters:
+            branches:
+              only: main  
